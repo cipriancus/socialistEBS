@@ -1,0 +1,10 @@
+{(patient-name,"George");(DoB,"1991-07-22");(height,1.75);(eye-color,"blue");(heart-rate,182)}
+{(patient-name,"Elena");(DoB,"1933-03-16");(height,1.33);(eye-color,"ce facem daca culoare ochilor este diferita");(heart-rate,63)}
+{(patient-name,"Elena");(DoB,"1909-10-07");(height,1.99);(eye-color,"green");(heart-rate,256)}
+{(patient-name,"George");(DoB,"1953-02-12");(height,1.69);(eye-color,"green");(heart-rate,436)}
+{(patient-name,"Elena");(DoB,"1975-04-24");(height,1.33);(eye-color,"black");(heart-rate,470)}
+{(patient-name,"Henry");(DoB,"1946-07-28");(height,1.81);(eye-color,"blue");(heart-rate,329)}
+{(patient-name,"George");(DoB,"1929-11-24");(height,1.84);(eye-color,"blue");(heart-rate,62)}
+{(patient-name,"George");(DoB,"1942-10-24");(height,1.23);(eye-color,"green");(heart-rate,245)}
+{(patient-name,"Michael");(DoB,"1914-04-12");(height,1.84);(eye-color,"brown");(heart-rate,42)}
+{(patient-name,"Bob");(DoB,"1906-05-12");(height,1.41);(eye-color,"brown");(heart-rate,180)}

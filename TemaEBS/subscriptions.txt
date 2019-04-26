@@ -1,0 +1,10 @@
+{(patient-name,=,Bob);(DoB,<,1987-09-18);(height,=,1.66);(eye-color,<=,gray)}
+{(patient-name,=,Bob);(DoB,<=,1986-03-19);(height,=,1.55);(eye-color,<,green)}
+{(patient-name,=,Michael);(DoB,<,1999-04-26);(height,=,1.45);(eye-color,>,brown)}
+{(patient-name,=,Carolina);(DoB,>=,1926-06-08);(height,<=,1.92);(eye-color,>,ce facem daca culoare ochilor este diferita)}
+{(patient-name,=,Carolina);(DoB,<,1998-05-30);(height,<>,1.52);(eye-color,<,blue)}
+{(patient-name,=,Henry);(DoB,<=,1917-08-18);(height,<,2.0);(eye-color,>=,green)}
+{(patient-name,=,George);(DoB,<=,1965-07-08);(height,<,1.23);(heart-rate,=,467)}
+{(patient-name,=,Henry);(DoB,>=,2008-11-28);(eye-color,<=,green);(heart-rate,>=,58)}
+{(patient-name,=,Elena);(height,=,2.01);(eye-color,>=,black)}
+{(DoB,<,1986-12-28);(height,=,1.22);(eye-color,>=,ce facem daca culoare ochilor este diferita)}
