@@ -1,7 +1,7 @@
 server:
   port: 8888
-  self-identity: 192.168.0.1
-  broker-list: 192.168.0.1,192.168.0.2,192.168.0.3
+  self-identity: 192.168.0.1:8888
+  broker-list: 192.168.0.1:8888,192.168.0.2:8889
 spring:
   data:
     rest:

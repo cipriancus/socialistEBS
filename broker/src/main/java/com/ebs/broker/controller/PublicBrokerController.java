@@ -6,11 +6,13 @@ import com.ebs.broker.service.PublicationService;
 import com.ebs.broker.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /** Used to communicate with publishers and subscribers */
-@RestController("/public")
+@RestController()
+@RequestMapping("/public")
 public class PublicBrokerController {
   @Autowired private SubscriptionService subscriptionService;
   @Autowired private PublicationService publicationService;

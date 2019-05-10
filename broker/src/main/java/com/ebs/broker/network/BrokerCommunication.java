@@ -1,36 +1,54 @@
-package com.ebs.broker.service;
+package com.ebs.broker.network;
 
+import com.ebs.broker.model.Person;
+import com.ebs.broker.model.Subscription;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@Service
-public class BrokerCommunicationService {
+public class BrokerCommunication {
+  private final String HTTP = "http://";
 
-  @Value("server.self-identity")
+  private final String PING_URL = "/private/ping";
+
+  private final String JOIN_URL = "/private/join_network";
+
+  @Value("${server.self-identity}")
   private String myIp;
 
-  @Value("server.broker-list")
+  @Value("${server.broker-list}")
   private String brokerStringList;
 
   @Autowired private RestTemplate restTemplate;
   private List<String> knownBrokers;
 
-  public BrokerCommunicationService() {
+  public BrokerCommunication() {
     knownBrokers = new ArrayList<>();
-    populateKnownBrokers();
   }
 
-  @Scheduled(cron = "* 1 * * * *")
+  @PostConstruct
+  private void populateKnownBrokers() {
+    String brokerList[] = brokerStringList.split(",");
+    for (String iterator : brokerList) {
+      if (!iterator.equals(myIp)
+          && isNotInKnownBrokers(iterator)
+          && sendJoinNetworkRequest(iterator)) {
+        knownBrokers.add(iterator);
+      }
+    }
+  }
+
+  @Scheduled(cron = "0/60 * * * * *")
   public void pingKnownBrokers() {
     Iterator<String> iterator = knownBrokers.iterator();
     while (iterator.hasNext()) {
@@ -53,7 +71,8 @@ public class BrokerCommunicationService {
 
   public boolean ping(String ipAddress) {
     try {
-      String response = restTemplate.getForEntity(ipAddress, String.class).getBody();
+      String response =
+          restTemplate.getForEntity(HTTP + ipAddress + PING_URL, String.class).getBody();
       if (Strings.isNullOrEmpty(response)) {
         return true;
       }
@@ -69,7 +88,13 @@ public class BrokerCommunicationService {
 
   public boolean sendJoinNetworkRequest(String ipAddress) {
     try {
-      ResponseEntity<String> response = restTemplate.postForEntity(ipAddress, null, String.class);
+      MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+      body.add("ipAddress", ipAddress);
+      HttpEntity<?> httpEntity = new HttpEntity<Object>(body, new HttpHeaders());
+
+      ResponseEntity response =
+          restTemplate.exchange(
+              HTTP + ipAddress + JOIN_URL, HttpMethod.POST, httpEntity, String.class);
       if (response.getStatusCode() == HttpStatus.OK) {
         return true;
       }
@@ -83,15 +108,14 @@ public class BrokerCommunicationService {
     return true;
   }
 
-  private void populateKnownBrokers() {
-    String brokerList[] = brokerStringList.split(",");
-    for (String iterator : brokerList) {
-      if (!iterator.equals(myIp)
-          && isNotInKnownBrokers(iterator)
-          && sendJoinNetworkRequest(iterator)) {
-        knownBrokers.add(iterator);
-      }
-    }
+  public boolean handleSubscription(Subscription subscription) {
+    // TODO:create identity routing
+    return true;
+  }
+
+  public boolean handlePublication(List<Person> personList) {
+    // TODO:create identity routing
+    return true;
   }
 
   private boolean isNotInKnownBrokers(String ipAddress) {
