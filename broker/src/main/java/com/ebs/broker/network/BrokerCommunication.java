@@ -1,6 +1,7 @@
 package com.ebs.broker.network;
 
 import com.ebs.broker.model.Person;
+import com.ebs.broker.model.RoutingTableEntry;
 import com.ebs.broker.model.Subscription;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class BrokerCommunication {
 
   private final String JOIN_URL = "/private/join_network";
 
+  private List<RoutingTableEntry> routingTable;
+
   @Value("${server.self-identity}")
   private String myIp;
 
@@ -34,6 +37,7 @@ public class BrokerCommunication {
 
   public BrokerCommunication() {
     knownBrokers = new ArrayList<>();
+    routingTable = new ArrayList<>();
   }
 
   @PostConstruct
@@ -108,8 +112,10 @@ public class BrokerCommunication {
     return true;
   }
 
-  public boolean handleSubscription(Subscription subscription) {
+  public boolean handleSubscription(Subscription subscription, String brokerIp) {
+    routingTable.add(new RoutingTableEntry(subscription, brokerIp));
     // TODO:create identity routing
+    // give to other nodes
     return true;
   }
 
