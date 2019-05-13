@@ -1,61 +1,27 @@
 package com.ebs.broker.model;
 
-import java.util.Date;
-
 public class Publication {
-  private String lastName;
+  private String fieldName;
+  private String value;
 
-  private String firstName;
-
-  private int age;
-
-  private Date birthDay;
-
-  public int getAge() {
-    return age;
+  public Publication(String fieldName, String value) {
+    this.fieldName = fieldName;
+    this.value = value;
   }
 
-  public void setAge(int age) {
-    this.age = age;
+  public String getFieldName() {
+    return fieldName;
   }
 
-  public String getLastName() {
-    return lastName;
+  public void setFieldName(String fieldName) {
+    this.fieldName = fieldName;
   }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
+  public String getValue() {
+    return value;
   }
 
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public void setBirthDay(Date birthDay) {
-    this.birthDay = birthDay;
-  }
-
-  public Date getBirthDay() {
-    return birthDay;
-  }
-
-  @Override
-  public String toString() {
-    return "("
-        + "lastName='"
-        + lastName
-        + '\''
-        + ", firstName='"
-        + firstName
-        + '\''
-        + ", age="
-        + age
-        + ", birthDay="
-        + birthDay
-        + ')';
+  public void setValue(String value) {
+    this.value = value;
   }
 }
