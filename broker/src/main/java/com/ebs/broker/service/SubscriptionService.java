@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class SubscriptionService {
   @Autowired BrokerCommunication brokerCommunication;
 
-  public boolean subscribe(Subscription subscription, String brokerIp) {
-    return brokerCommunication.handleSubscription(subscription, brokerIp);
+  public boolean subscribe(Subscription subscription) {
+    return brokerCommunication.handleSubscription(subscription);
   }
 }

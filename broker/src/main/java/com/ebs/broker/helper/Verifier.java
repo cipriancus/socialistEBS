@@ -4,10 +4,10 @@ package com.ebs.broker.helper;
 //import java.text.ParseException;
 //import java.text.SimpleDateFormat;
 //import java.util.Calendar;
-//
-//public class Verifier {
+
+public class Verifier {
 //    public static boolean verifyMessage(Message message, Condition condition) {
-//        Person person = (Person) message.getGeneratedObject();
+//        Publication person = (Publication) message.getGeneratedObject();
 //        if (condition.getFieldName().equalsIgnoreCase("firstName")) {
 //            if (person.getFirstName() != null && condition.getEqualityOperator().equalsIgnoreCase("=")) {
 //                return person.getFirstName().equalsIgnoreCase(condition.getValue());
@@ -50,4 +50,4 @@ package com.ebs.broker.helper;
 //        }
 //        return false;
 //    }
-//}
+}

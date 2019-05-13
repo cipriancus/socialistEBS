@@ -1,6 +1,6 @@
 package com.ebs.broker.network;
 
-import com.ebs.broker.model.Person;
+import com.ebs.broker.model.Publication;
 import com.ebs.broker.model.RoutingTableEntry;
 import com.ebs.broker.model.Subscription;
 import com.google.common.base.Strings;
@@ -112,15 +112,18 @@ public class BrokerCommunication {
     return true;
   }
 
-  public boolean handleSubscription(Subscription subscription, String brokerIp) {
-    routingTable.add(new RoutingTableEntry(subscription, brokerIp));
+  public boolean handleSubscription(Subscription subscription) {
+    routingTable.add(new RoutingTableEntry(subscription, myIp));
     // TODO:create identity routing
     // give to other nodes
     return true;
   }
 
-  public boolean handlePublication(List<Person> personList) {
+  public boolean handlePublication(List<Publication> publicationList, String brokerIp) {
     // TODO:create identity routing
+    // verify subscriptions with all publications
+    // send it to my matching subscribers
+    // else send it forward if match
     return true;
   }
 

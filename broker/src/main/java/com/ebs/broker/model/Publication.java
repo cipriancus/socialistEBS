@@ -2,7 +2,7 @@ package com.ebs.broker.model;
 
 import java.util.Date;
 
-public class Person {
+public class Publication {
   private String lastName;
 
   private String firstName;
