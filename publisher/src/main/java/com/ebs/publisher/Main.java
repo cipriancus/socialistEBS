@@ -6,6 +6,7 @@ import com.ebs.publisher.service.PublicationGenerator;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayOutputStream;
@@ -56,7 +57,11 @@ public class Main {
             }
             headers.put("client_ip",list);
             HttpEntity<String> request = new HttpEntity<>(publcationAsString,headers);
-            restTemplate.postForObject(fooResourceUrl, request, String.class);
+            try{
+                restTemplate.postForObject(fooResourceUrl, request, String.class);
+            }catch(ResourceAccessException ignored){
+
+            }
         }
     }
 }
