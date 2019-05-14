@@ -1,4 +1,4 @@
-package com.ebs.broker.model.protobuf;
+package com.ebs.broker.model.pojo;
 
 public class Subscription {
   private String fieldName;

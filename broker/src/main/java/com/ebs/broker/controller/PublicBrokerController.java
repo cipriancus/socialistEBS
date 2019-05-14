@@ -1,7 +1,8 @@
 package com.ebs.broker.controller;
 
-import com.ebs.broker.model.protobuf.Publication;
-import com.ebs.broker.model.protobuf.Subscription;
+import com.ebs.broker.model.ConverterService;
+import com.ebs.broker.model.pojo.Publication;
+import com.ebs.broker.model.pojo.Subscription;
 import com.ebs.broker.service.PublicationService;
 import com.ebs.broker.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,6 @@ public class PublicBrokerController {
   @PostMapping("/publish")
   public boolean publish(
       @RequestBody String publication, @RequestHeader("client_ip") String clientIp) {
-    return publicationService.handleNotification(Publication.parseFrom(publication), clientIp);
+    return publicationService.handleNotification(ConverterService.getPublicationFromProtoStrong(publication), clientIp);
   }
 }

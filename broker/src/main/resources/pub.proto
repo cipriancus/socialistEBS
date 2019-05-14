@@ -1,0 +1,10 @@
+syntax = "proto3";
+package com.ebs.broker.model.protobuf;
+
+message Publication {
+  string patientName = 1;
+  string dateOfBirth = 2;
+  string height = 3;
+  string eyeColor = 4;
+  string heartRate = 5;
+}
