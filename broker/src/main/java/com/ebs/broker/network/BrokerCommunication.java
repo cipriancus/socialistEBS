@@ -1,8 +1,8 @@
 package com.ebs.broker.network;
 
-import com.ebs.broker.model.protobuf.Publication;
+import com.ebs.broker.model.pojo.Publication;
 import com.ebs.broker.model.RoutingTableEntry;
-import com.ebs.broker.model.protobuf.Subscription;
+import com.ebs.broker.model.pojo.Subscription;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

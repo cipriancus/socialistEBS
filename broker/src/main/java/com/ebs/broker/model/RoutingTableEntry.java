@@ -1,6 +1,6 @@
 package com.ebs.broker.model;
 
-import com.ebs.broker.model.protobuf.Subscription;
+import com.ebs.broker.model.pojo.Subscription;
 
 public class RoutingTableEntry {
   private Subscription subscription;

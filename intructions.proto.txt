@@ -1,0 +1,6 @@
+1. download proto compiler from here:
+https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protoc-3.7.1-win64.zip
+
+2. Add to path: path/to/protoc-3.7.1-win64/bin
+
+3. run compileproto.bat
