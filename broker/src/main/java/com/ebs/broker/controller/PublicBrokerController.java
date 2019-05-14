@@ -1,14 +1,11 @@
 package com.ebs.broker.controller;
 
-import com.ebs.broker.model.Publication;
-import com.ebs.broker.model.Subscription;
+import com.ebs.broker.model.protobuf.Publication;
+import com.ebs.broker.model.protobuf.Subscription;
 import com.ebs.broker.service.PublicationService;
 import com.ebs.broker.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 /** Used to communicate with publishers and subscribers */
 @RestController()
@@ -25,18 +22,20 @@ public class PublicBrokerController {
    * @return
    */
   @PostMapping("/subscribe")
-  public boolean subscribe(Subscription subscription) {
-    return subscriptionService.subscribe(subscription);
+  public boolean subscribe(
+      @RequestBody String subscription, @RequestHeader("client_ip") String clientIp) {
+    return subscriptionService.subscribe(Subscription.parseFrom(subscription), clientIp);
   }
 
   /**
-   * Publish a list o persons and the broker will propagate in the network via identity routing
+   * Publish a person and the broker will propagate in the network via identity routing
    *
-   * @param publications
+   * @param publication
    * @return
    */
   @PostMapping("/publish")
-  public boolean publish(List<Publication> publications) {
-    return publicationService.publish(publications);
+  public boolean publish(
+      @RequestBody String publication, @RequestHeader("client_ip") String clientIp) {
+    return publicationService.handleNotification(Publication.parseFrom(publication), clientIp);
   }
 }

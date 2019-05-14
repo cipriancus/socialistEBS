@@ -1,8 +1,8 @@
 package com.ebs.broker.network;
 
-import com.ebs.broker.model.Publication;
+import com.ebs.broker.model.protobuf.Publication;
 import com.ebs.broker.model.RoutingTableEntry;
-import com.ebs.broker.model.Subscription;
+import com.ebs.broker.model.protobuf.Subscription;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class BrokerCommunication {
   private final String HTTP = "http://";
@@ -112,18 +113,73 @@ public class BrokerCommunication {
     return true;
   }
 
-  public boolean handleSubscription(Subscription subscription) {
-    routingTable.add(new RoutingTableEntry(subscription, myIp));
-    // TODO:create identity routing
-    // give to other nodes
+//  public boolean handleSubscription(Subscription subscription, String clientIP) {
+//    routingTable.add(new RoutingTableEntry(subscription, clientIP));
+//    // TODO:create identity routing
+//    // give to other nodes
+//    return true;
+//  }
+
+  public Set<Subscription> administer(Subscription subscription, String clientIp) {
+    /*
+       	begin{
+    	Ms=0/
+    	forall F in S do{
+    		// se steng din tabela de rutare toate subscriptiile echivalente F si destinatia lui
+    		if source(m) E NB {
+    			Tb=Tb-CbI(F,source(m));//CbI(F,D)={(G,D)ETb ^ F =G} un set de filtre din tabela de rutare Tb ce sunt echivalente F=G si au aceeasi destinatie D
+    		}else{
+    			Tb=Tb-{(F,source(m))};//F si clientul
+    		}
+    		A={(F,H) H E DbI(F)-{source(m)}} // trimit subscriptia la toti brokerii vecini mai putin de unde a venit
+    		//set de vecini ai lui B ce pot fi destinatii in Tb a,i pentru fiecare broker sa nu existe alt broker destinatie in Tb pentru o subscriptie echivalenta pt F
+
+    		Ms=Ms U A
+    		Tb=Tb U{(F,source(m))}
+    	}
+    }
+    return Ms;
+        */
+    return null;
+  }
+
+  public boolean handleAdminMessage(Set<Subscription> subscriptionSet, String clientIp) {
+    /*
+       	forall H in BN-{d} {
+    	S={F|(F,H) in FS}
+    	if(S!=0/){
+    		propagate_subscription(H,S)
+    	}
+    }
+        */
     return true;
   }
 
-  public boolean handlePublication(List<Publication> publicationList, String brokerIp) {
-    // TODO:create identity routing
-    // verify subscriptions with all publications
-    // send it to my matching subscribers
-    // else send it forward if match
+  public boolean handleNotification(Publication publicationList, String brokerIp) {
+    /*
+       matching_nodes = destinatins(match(FB,n));
+    // toate nodurile destinati mai putin D intersectat cu brokerii vecini
+    forall(Bi in ((matching_nodes-{D}) intersectat NB)){
+    	propagate_publication(Bi) // send(Bi,"forward(n)"); //PrivateBrokerController /propagate_publication
+    	// notifice alt nod care ar trebui sa apeleze tot handle notification
+    }
+
+    //din multimea de noduri ce fac match cu notificarea n
+    //se vad care noduri sunt sunt in multimea locala de clienti a brokerului curent
+    forall(C in (matching_nodes intersectat LB)){
+    	notify(C,n) --> notifica clientul de notificarea n
+    }
+        */
+    return true;
+  }
+
+  public boolean propagatePublication(Publication publication, String brokerIp) {
+    //	send(Bi,n)
+    return true;
+  }
+
+  public boolean propagateSubscription(Subscription subscription, String brokerIp) {
+    //	send(Bi,s)
     return true;
   }
 

@@ -1,5 +1,7 @@
 package com.ebs.broker.model;
 
+import com.ebs.broker.model.protobuf.Subscription;
+
 public class RoutingTableEntry {
   private Subscription subscription;
   private String brokerIp;
