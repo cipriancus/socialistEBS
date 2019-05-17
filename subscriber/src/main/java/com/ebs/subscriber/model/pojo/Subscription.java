@@ -1,4 +1,4 @@
-package com.ebs.broker.model.pojo;
+package com.ebs.subscriber.model.pojo;
 
 import java.util.ArrayList;
 

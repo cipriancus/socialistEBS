@@ -1,8 +1,8 @@
-package com.ebs.publisher.service.fields;
+package com.ebs.subscriber.service.generator.fields;
 
 import java.util.Random;
 
-public class EyeColor implements Field {
+public class EyeColor implements Field{
     private static String[] colors = {"blue","black","brown","green","gray"};
 
     public String get(){

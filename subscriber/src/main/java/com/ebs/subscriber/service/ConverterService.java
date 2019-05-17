@@ -1,10 +1,10 @@
-package com.ebs.broker.model;
+package com.ebs.subscriber.service;
 
-import com.ebs.broker.model.pojo.Publication;
-import com.ebs.broker.model.pojo.Subscription;
-import com.ebs.broker.model.pojo.SubscriptionProperty;
-import com.ebs.broker.model.protobuf.Pub;
-import com.ebs.broker.model.protobuf.Sub;
+import com.ebs.subscriber.model.pojo.Publication;
+import com.ebs.subscriber.model.pojo.Subscription;
+import com.ebs.subscriber.model.pojo.SubscriptionProperty;
+import com.ebs.subscriber.model.protogen.Pub;
+import com.ebs.subscriber.model.protogen.Sub;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.io.ByteArrayOutputStream;
