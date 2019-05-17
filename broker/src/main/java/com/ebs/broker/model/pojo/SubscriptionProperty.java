@@ -3,34 +3,10 @@ package com.ebs.broker.model.pojo;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SubscriptionProperty {
-//    public enum Type {
-//        INT("int"),
-//        STRING("string");
-//        private String type;
-//
-//        Type(String type) {
-//            this.type = type;
-//        }
-//
-//        public String getValue() {
-//            return type;
-//        }
-//
-//        public static Type getEnum(String value) {
-//            for (Type type : Type.values())
-//                if (type.getValue().equalsIgnoreCase(value)) {
-//                    return type;
-//                }
-//
-//            throw new IllegalArgumentException();
-//        }
-//
-//    }
 
     String property;
     String comparisonSign;
     String value;
-//    SubscriptionProperty.Type type;
 
     public SubscriptionProperty(){}
 
@@ -44,14 +20,6 @@ public class SubscriptionProperty {
         this.comparisonSign = comparisonSign;
         this.value = value;
     }
-
-//    public Type getType() {
-//        return type;
-//    }
-//
-//    public void setType(Type type) {
-//        this.type = type;
-//    }
 
     public String getProperty() {
         return property;
