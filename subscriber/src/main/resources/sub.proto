@@ -1,0 +1,18 @@
+syntax = "proto3";
+package com.ebs.subscriber.model.protogen;
+
+enum Type {
+    STRING = 0;
+    INT = 1;
+}
+message SubscriptionProperty{
+    string fieldName = 1;
+    string operator = 2;
+    string fieldValue = 3;
+    Type fieldType = 4; //defaults to STRING
+
+}
+
+message Subscription {
+    repeated SubscriptionProperty property = 1;
+}

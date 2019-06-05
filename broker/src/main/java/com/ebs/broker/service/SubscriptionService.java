@@ -12,6 +12,7 @@ public class SubscriptionService {
   @Autowired BrokerCommunication brokerCommunication;
 
   public boolean subscribe(Subscription subscription, String clientIp) {
+    System.out.println("Received subscription: "+subscription.toString()+" from "+clientIp);
     Set<Subscription> subscriptionSet = brokerCommunication.administer(subscription, clientIp);
     return brokerCommunication.handleAdminMessage(subscriptionSet, clientIp);
   }

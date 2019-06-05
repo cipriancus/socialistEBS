@@ -31,7 +31,7 @@ public class Main {
         builder.append(port);
         builder.append(endpoint);
 
-        String fooResourceUrl = builder.toString();
+        String url = builder.toString();
 
         for (int i = 0; i < pubGenCount; i++) {
             Publication publication = new PublicationGenerator().generatePublication();
@@ -41,6 +41,7 @@ public class Main {
             pubBuilder.setHeartRate(publication.getHeartRate());
             pubBuilder.setPatientName(publication.getPatientName());
             pubBuilder.setHeight(publication.getHeight());
+            System.out.println("Sending: "+publication.toString());
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             try {
                 pubBuilder.build().writeTo(outputStream);
@@ -58,7 +59,7 @@ public class Main {
             headers.put("client_ip",list);
             HttpEntity<String> request = new HttpEntity<>(publcationAsString,headers);
             try{
-                restTemplate.postForObject(fooResourceUrl, request, String.class);
+                restTemplate.postForObject(url, request, String.class);
             }catch(ResourceAccessException ignored){
 
             }

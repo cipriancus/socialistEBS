@@ -10,6 +10,7 @@ public class PublicationService {
   @Autowired BrokerCommunication brokerCommunication;
 
   public boolean handleNotification(Publication publications, String clientIp) {
+    System.out.println("Received publication: "+publications.toString()+" from "+clientIp);
     return brokerCommunication.handleNotification(publications, clientIp);
   }
 }

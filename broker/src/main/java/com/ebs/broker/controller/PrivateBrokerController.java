@@ -1,7 +1,6 @@
 package com.ebs.broker.controller;
 
 import com.ebs.broker.model.ConverterService;
-import com.ebs.broker.model.pojo.Publication;
 import com.ebs.broker.model.pojo.Subscription;
 import com.ebs.broker.network.BrokerCommunication;
 import com.ebs.broker.service.PublicationService;
@@ -40,7 +39,7 @@ public class PrivateBrokerController {
   @PostMapping("propagate_publication")
   public boolean propagatePublication(
       @RequestBody String publication, @RequestHeader("broker_ip") String brokerIp) {
-    return publicationService.handleNotification(ConverterService.getPublicationFromProtoStrong(publication), brokerIp);
+    return publicationService.handleNotification(ConverterService.getPublicationFromProtoString(publication), brokerIp);
   }
 
   /**
@@ -51,7 +50,7 @@ public class PrivateBrokerController {
   @PostMapping("propagate_subscription")
   public boolean propagateSubscription(
       @RequestBody String subscription, @RequestHeader("broker_ip") String brokerIp) {
-    return subscriptionService.subscribe(Subscription.parseFrom(subscription), brokerIp);
+    return subscriptionService.subscribe(ConverterService.getSubscriptionFromProtoString(subscription), brokerIp);
   }
 
   /**
