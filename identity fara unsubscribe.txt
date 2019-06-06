@@ -1,0 +1,66 @@
+//odata ce o subscriptie a fost trimsa printr un broker nu l mai trimitem inca odata ca nu are sens si nici un filtru echivalent - identity routing
+0/ = empty set
+
+sub(Client C, Subscription F){//PublicBrokerController /subscribe 
+	FS = administer(C,F)
+	handle_admin_message(C,FS);
+}//ok
+
+pub(Client C, Notification n{//PublicBrokerController /publish
+	handle_notification(C,n);
+}//ok
+
+propagate_publication(node bi, notification n){
+	send(Bi,n)
+}//ok
+
+propagate_subscription(node bi, subscription s){
+	send(bi,Ss);
+}//ok
+
+
+handle_notification(Node D,Notification n){
+	matching_nodes = destinatins(match(FB,n));
+	// toate nodurile destinati mai putin D intersectat cu brokerii vecini
+	forall(Bi in ((matching_nodes-{D}) intersectat NB)){ 
+		propagate_publication(Bi) // send(Bi,"forward(n)"); //PrivateBrokerController /propagate_publication
+		// notifice alt nod care ar trebui sa apeleze tot handle notification
+	}
+
+	//din multimea de noduri ce fac match cu notificarea n
+	//se vad care noduri sunt sunt in multimea locala de clienti a brokerului curent
+	forall(C in (matching_nodes intersectat LB)){
+		notify(C,n) --> notifica clientul de notificarea n
+	}
+}//ok
+
+handle_admin_message(Node d, Set FS){
+	forall H in BN-{d} {
+		S={F|(F,H) in FS}
+		if(S!=0/){
+			propagate_subscription(H,S)
+		}
+	}
+}//ok
+
+
+//method specific for routing alg, returns a list of subscriptions to be delivered to other brokers
+administer(source(m), S){//source(m) sursa mesajului, S subscriptia
+	begin{
+		Ms=0/
+		forall F in S do{
+			// se steng din tabela de rutare toate subscriptiile echivalente F si destinatia lui
+			if source(m) E NB {
+				Tb=Tb-CbI(F,source(m));//CbI(F,D)={(G,D)ETb ^ F =G} un set de filtre din tabela de rutare Tb ce sunt echivalente F=G si au aceeasi destinatie D
+			}else{
+				Tb=Tb-{(F,source(m))};//F si clientul
+			}
+			A={(F,H) H E DbI(F)-{source(m)}} // trimit subscriptia la toti brokerii vecini mai putin de unde a venit
+			//set de vecini ai lui B ce pot fi destinatii in Tb a,i pentru fiecare broker sa nu existe alt broker destinatie in Tb pentru o subscriptie echivalenta pt F
+			
+			Ms=Ms U A
+			Tb=Tb U{(F,source(m))}
+		}
+	}
+	return Ms;
+}//ok

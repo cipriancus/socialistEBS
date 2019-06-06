@@ -1,0 +1,8 @@
+server:
+  port: 8889
+  self-identity: 127.0.0.1:8889
+  broker-list: 127.0.0.1:8888,127.0.0.1:8890
+spring:
+  data:
+    rest:
+      base-path: /api/v1

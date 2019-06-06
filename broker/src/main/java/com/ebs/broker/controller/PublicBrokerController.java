@@ -24,7 +24,8 @@ public class PublicBrokerController {
   @PostMapping("/subscribe")
   public boolean subscribe(
       @RequestBody String subscription, @RequestHeader("client_ip") String clientIp) {
-    return subscriptionService.subscribe(ConverterService.getSubscriptionFromProtoString(subscription), clientIp);
+    return subscriptionService.subscribe(
+        ConverterService.getSubscriptionFromProtoString(subscription), clientIp);
   }
 
   /**
@@ -36,6 +37,7 @@ public class PublicBrokerController {
   @PostMapping("/publish")
   public boolean publish(
       @RequestBody String publication, @RequestHeader("client_ip") String clientIp) {
-    return publicationService.handleNotification(ConverterService.getPublicationFromProtoString(publication), clientIp);
+    return publicationService.handleNotification(
+        ConverterService.getPublicationFromProtoString(publication), clientIp);
   }
 }

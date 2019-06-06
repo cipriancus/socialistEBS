@@ -39,7 +39,8 @@ public class PrivateBrokerController {
   @PostMapping("propagate_publication")
   public boolean propagatePublication(
       @RequestBody String publication, @RequestHeader("broker_ip") String brokerIp) {
-    return publicationService.handleNotification(ConverterService.getPublicationFromProtoString(publication), brokerIp);
+    return publicationService.handleNotification(
+        ConverterService.getPublicationFromProtoString(publication), brokerIp);
   }
 
   /**
@@ -50,7 +51,8 @@ public class PrivateBrokerController {
   @PostMapping("propagate_subscription")
   public boolean propagateSubscription(
       @RequestBody String subscription, @RequestHeader("broker_ip") String brokerIp) {
-    return subscriptionService.subscribe(ConverterService.getSubscriptionFromProtoString(subscription), brokerIp);
+    return subscriptionService.subscribe(
+        ConverterService.getSubscriptionFromProtoString(subscription), brokerIp);
   }
 
   /**

@@ -21,9 +21,9 @@ public class Main {
     public static void main(String[] args) {
         RestTemplate restTemplate = new RestTemplate();
 
-        String ip = args[0];
-        String port = args[1];
-        int pubGenCount = Integer.parseInt(args[2]);
+        String ip = "127.0.0.1";
+        String port = "8888";
+        int pubGenCount = Integer.parseInt("100");
         String endpoint = "/public/publish";
         StringBuilder builder = new StringBuilder("http://");
         builder.append(ip);
