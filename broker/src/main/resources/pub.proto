@@ -7,4 +7,5 @@ message Publication {
   string height = 3;
   string eyeColor = 4;
   string heartRate = 5;
+  string timestamp = 6;
 }

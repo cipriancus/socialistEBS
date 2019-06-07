@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class Main {
             pubBuilder.setHeartRate(publication.getHeartRate());
             pubBuilder.setPatientName(publication.getPatientName());
             pubBuilder.setHeight(publication.getHeight());
+            pubBuilder.setTimestamp(LocalDateTime.now().toString());
             System.out.println("Sending: "+publication.toString());
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             try {

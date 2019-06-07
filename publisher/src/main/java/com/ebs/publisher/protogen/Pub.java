@@ -67,6 +67,16 @@ public final class Pub {
      */
     com.google.protobuf.ByteString
         getHeartRateBytes();
+
+    /**
+     * <code>string timestamp = 6;</code>
+     */
+    java.lang.String getTimestamp();
+    /**
+     * <code>string timestamp = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getTimestampBytes();
   }
   /**
    * Protobuf type {@code com.ebs.publisher.protogen.Publication}
@@ -86,6 +96,7 @@ public final class Pub {
       height_ = "";
       eyeColor_ = "";
       heartRate_ = "";
+      timestamp_ = "";
     }
 
     @java.lang.Override
@@ -140,6 +151,12 @@ public final class Pub {
               java.lang.String s = input.readStringRequireUtf8();
 
               heartRate_ = s;
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              timestamp_ = s;
               break;
             }
             default: {
@@ -344,6 +361,40 @@ public final class Pub {
       }
     }
 
+    public static final int TIMESTAMP_FIELD_NUMBER = 6;
+    private volatile java.lang.Object timestamp_;
+    /**
+     * <code>string timestamp = 6;</code>
+     */
+    public java.lang.String getTimestamp() {
+      java.lang.Object ref = timestamp_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        timestamp_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string timestamp = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTimestampBytes() {
+      java.lang.Object ref = timestamp_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        timestamp_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -373,6 +424,9 @@ public final class Pub {
       if (!getHeartRateBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 5, heartRate_);
       }
+      if (!getTimestampBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, timestamp_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -396,6 +450,9 @@ public final class Pub {
       }
       if (!getHeartRateBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, heartRate_);
+      }
+      if (!getTimestampBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, timestamp_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -422,6 +479,8 @@ public final class Pub {
           .equals(other.getEyeColor())) return false;
       if (!getHeartRate()
           .equals(other.getHeartRate())) return false;
+      if (!getTimestamp()
+          .equals(other.getTimestamp())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -443,6 +502,8 @@ public final class Pub {
       hash = (53 * hash) + getEyeColor().hashCode();
       hash = (37 * hash) + HEARTRATE_FIELD_NUMBER;
       hash = (53 * hash) + getHeartRate().hashCode();
+      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
+      hash = (53 * hash) + getTimestamp().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -586,6 +647,8 @@ public final class Pub {
 
         heartRate_ = "";
 
+        timestamp_ = "";
+
         return this;
       }
 
@@ -617,6 +680,7 @@ public final class Pub {
         result.height_ = height_;
         result.eyeColor_ = eyeColor_;
         result.heartRate_ = heartRate_;
+        result.timestamp_ = timestamp_;
         onBuilt();
         return result;
       }
@@ -683,6 +747,10 @@ public final class Pub {
         }
         if (!other.getHeartRate().isEmpty()) {
           heartRate_ = other.heartRate_;
+          onChanged();
+        }
+        if (!other.getTimestamp().isEmpty()) {
+          timestamp_ = other.timestamp_;
           onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
@@ -1058,6 +1126,75 @@ public final class Pub {
         onChanged();
         return this;
       }
+
+      private java.lang.Object timestamp_ = "";
+      /**
+       * <code>string timestamp = 6;</code>
+       */
+      public java.lang.String getTimestamp() {
+        java.lang.Object ref = timestamp_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          timestamp_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string timestamp = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTimestampBytes() {
+        java.lang.Object ref = timestamp_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          timestamp_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string timestamp = 6;</code>
+       */
+      public Builder setTimestamp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        timestamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string timestamp = 6;</code>
+       */
+      public Builder clearTimestamp() {
+        
+        timestamp_ = getDefaultInstance().getTimestamp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string timestamp = 6;</code>
+       */
+      public Builder setTimestampBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        timestamp_ = value;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1126,9 +1263,10 @@ public final class Pub {
   static {
     java.lang.String[] descriptorData = {
       "\n\tpub.proto\022\032com.ebs.publisher.protogen\"" +
-      "l\n\013Publication\022\023\n\013patientName\030\001 \001(\t\022\023\n\013d" +
+      "\177\n\013Publication\022\023\n\013patientName\030\001 \001(\t\022\023\n\013d" +
       "ateOfBirth\030\002 \001(\t\022\016\n\006height\030\003 \001(\t\022\020\n\010eyeC" +
-      "olor\030\004 \001(\t\022\021\n\theartRate\030\005 \001(\tb\006proto3"
+      "olor\030\004 \001(\t\022\021\n\theartRate\030\005 \001(\t\022\021\n\ttimesta" +
+      "mp\030\006 \001(\tb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1147,7 +1285,7 @@ public final class Pub {
     internal_static_com_ebs_publisher_protogen_Publication_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_ebs_publisher_protogen_Publication_descriptor,
-        new java.lang.String[] { "PatientName", "DateOfBirth", "Height", "EyeColor", "HeartRate", });
+        new java.lang.String[] { "PatientName", "DateOfBirth", "Height", "EyeColor", "HeartRate", "Timestamp", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
