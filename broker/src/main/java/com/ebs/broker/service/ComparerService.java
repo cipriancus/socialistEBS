@@ -37,18 +37,18 @@ public class ComparerService {
                 && !(!subscriptionCalendar.equals(publicationCalendar))) {
           return false;
         } else if (iterator.getComparisonSign().equalsIgnoreCase("<=")
-                && !(subscriptionCalendar.before(publicationCalendar)
-                || subscriptionCalendar.equals(publicationCalendar))) {
+                && !(publicationCalendar.before(subscriptionCalendar)
+                || publicationCalendar.equals(subscriptionCalendar))) {
           return false;
         } else if (iterator.getComparisonSign().equalsIgnoreCase("<")
-                && !(subscriptionCalendar.before(publicationCalendar))) {
+                && !(publicationCalendar.before(subscriptionCalendar))) {
           return false;
         } else if (iterator.getComparisonSign().equalsIgnoreCase(">")
-                && !(subscriptionCalendar.after(publicationCalendar))) {
+                && !(publicationCalendar.after(subscriptionCalendar))) {
           return false;
         } else if (iterator.getComparisonSign().equalsIgnoreCase(">=")
-                && !(subscriptionCalendar.after(publicationCalendar)
-                || subscriptionCalendar.equals(publicationCalendar))) {
+                && !(publicationCalendar.after(subscriptionCalendar)
+                || publicationCalendar.equals(subscriptionCalendar))) {
           return false;
         }
       } else if (iterator.getProperty().equals("height")) {
@@ -63,19 +63,19 @@ public class ComparerService {
           return false;
         } else if (height > 0
                 && iterator.getComparisonSign().equalsIgnoreCase("<=")
-                && !(height <= Double.parseDouble(publication.getHeight()))) {
+                && !(Double.parseDouble(publication.getHeight()) <= height)) {
           return false;
         } else if (height > 0
                 && iterator.getComparisonSign().equalsIgnoreCase("<")
-                && !(height < Double.parseDouble(publication.getHeight()))) {
+                && !(Double.parseDouble(publication.getHeight()) < height)) {
           return false;
         } else if (height > 0
                 && iterator.getComparisonSign().equalsIgnoreCase(">")
-                && !(height > Double.parseDouble(publication.getHeight()))) {
+                && !(Double.parseDouble(publication.getHeight()) > height)) {
           return false;
         } else if (height > 0
                 && iterator.getComparisonSign().equalsIgnoreCase(">=")
-                && !(height >= Double.parseDouble(publication.getHeight()))) {
+                && !(Double.parseDouble(publication.getHeight()) >= height)) {
           return false;
         }
       } else if (iterator.getProperty().equals("eye-color")
@@ -93,19 +93,19 @@ public class ComparerService {
           return false;
         } else if (heartRate > 0
                 && iterator.getComparisonSign().equalsIgnoreCase("<=")
-                && !(heartRate <= Double.parseDouble(publication.getHeartRate()))) {
+                && !(Double.parseDouble(publication.getHeartRate()) <= heartRate)) {
           return false;
         } else if (heartRate > 0
                 && iterator.getComparisonSign().equalsIgnoreCase("<")
-                && !(heartRate < Double.parseDouble(publication.getHeartRate()))) {
+                && !(Double.parseDouble(publication.getHeartRate()) < heartRate)) {
           return false;
         } else if (heartRate > 0
                 && iterator.getComparisonSign().equalsIgnoreCase(">")
-                && !(heartRate > Double.parseDouble(publication.getHeartRate()))) {
+                && !(Double.parseDouble(publication.getHeartRate()) > heartRate)) {
           return false;
         } else if (heartRate > 0
                 && iterator.getComparisonSign().equalsIgnoreCase(">=")
-                && !(heartRate >= Double.parseDouble(publication.getHeartRate()))) {
+                && !(Double.parseDouble(publication.getHeartRate()) >= heartRate)) {
           return false;
         }
       }
