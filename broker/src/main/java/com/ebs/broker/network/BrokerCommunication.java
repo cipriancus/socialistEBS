@@ -77,12 +77,12 @@ public class BrokerCommunication {
     }
   }
 
-  public void addLocalClient(String ip){
+  public void addLocalClient(String ip) {
     localClients.add(ip);
   }
 
   public boolean joinNetwork(String ipAddress) {
-    if (ping(ipAddress) == true && isNotInKnownBrokers(ipAddress) == true) {
+    if (isNotInKnownBrokers(ipAddress) == true) {
       knownBrokers.add(ipAddress);
       return true;
     }
@@ -92,7 +92,7 @@ public class BrokerCommunication {
   public boolean ping(String ipAddress) {
     try {
       String response =
-          restTemplate.getForEntity(HTTP + ipAddress + PING_URL, String.class).getBody();
+              restTemplate.getForEntity(HTTP + ipAddress + PING_URL, String.class).getBody();
       if (Strings.isNullOrEmpty(response)) {
         return true;
       }
@@ -108,9 +108,7 @@ public class BrokerCommunication {
 
   public boolean sendJoinNetworkRequest(String ipAddress) {
     try {
-      MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-      body.add("ipAddress", ipAddress);
-      HttpEntity<?> httpEntity = new HttpEntity<Object>(body, new HttpHeaders());
+      HttpEntity<?> httpEntity = new HttpEntity<Object>(myIp, new HttpHeaders());
 
       ResponseEntity response =
           restTemplate.exchange(

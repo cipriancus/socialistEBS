@@ -24,6 +24,7 @@ public class PublicBrokerController {
   @PostMapping("/subscribe")
   public boolean subscribe(
       @RequestBody String subscription, @RequestHeader("client_ip") String clientIp) {
+    subscriptionService.addLocalClient(clientIp);
     return subscriptionService.subscribe(
         ConverterService.getSubscriptionFromProtoString(subscription), clientIp);
   }

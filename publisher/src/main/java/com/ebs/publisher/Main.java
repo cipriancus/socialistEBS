@@ -22,7 +22,7 @@ public class Main {
         RestTemplate restTemplate = new RestTemplate();
 
         String ip = "127.0.0.1";
-        String port = "8888";
+        String port = "8890";
         int pubGenCount = Integer.parseInt("100");
         String endpoint = "/public/publish";
         StringBuilder builder = new StringBuilder("http://");

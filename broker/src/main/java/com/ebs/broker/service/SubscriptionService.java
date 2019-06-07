@@ -14,8 +14,11 @@ public class SubscriptionService {
 
   public boolean subscribe(Subscription subscription, String clientIp) {
     System.out.println("Received subscription: " + subscription.toString() + " from " + clientIp);
-    brokerCommunication.addLocalClient(clientIp);
     Set<RoutingTableEntry> subscriptionSet = brokerCommunication.administer(subscription, clientIp);
     return brokerCommunication.handleAdminMessage(subscriptionSet, clientIp);
+  }
+
+  public void addLocalClient(String ip) {
+    brokerCommunication.addLocalClient(ip);
   }
 }
