@@ -22,7 +22,8 @@ public class ConverterService {
               pub.getDateOfBirth(),
               pub.getHeight(),
               pub.getEyeColor(),
-              pub.getHeartRate());
+              pub.getHeartRate(),
+              pub.getTimestamp());
     } catch (InvalidProtocolBufferException e) {
       e.printStackTrace();
     }
@@ -36,6 +37,7 @@ public class ConverterService {
     pubBuilder.setHeartRate(publication.getHeartRate());
     pubBuilder.setPatientName(publication.getPatientName());
     pubBuilder.setHeight(publication.getHeight());
+    pubBuilder.setTimestamp(publication.getTimestamp());
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     try {
       pubBuilder.build().writeTo(outputStream);

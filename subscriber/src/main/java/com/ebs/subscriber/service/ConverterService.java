@@ -18,7 +18,7 @@ public class ConverterService {
         Publication publication = null;
         try {
             Pub.Publication pub = Pub.Publication.parseFrom(serialized.getBytes());
-            publication = new Publication(pub.getPatientName(), pub.getDateOfBirth(), pub.getHeight(), pub.getEyeColor(), pub.getHeartRate());
+            publication = new Publication(pub.getPatientName(), pub.getDateOfBirth(), pub.getHeight(), pub.getEyeColor(), pub.getHeartRate(),pub.getTimestamp());
             LocalDateTime localDateTime = LocalDateTime.now();
             System.out.println("Duration: "+ LocalDateTime.parse(pub.getTimestamp()).until(localDateTime, ChronoUnit.MILLIS)+" miliseconds");
         } catch (InvalidProtocolBufferException e) {
@@ -34,6 +34,7 @@ public class ConverterService {
         pubBuilder.setHeartRate(publication.getHeartRate());
         pubBuilder.setPatientName(publication.getPatientName());
         pubBuilder.setHeight(publication.getHeight());
+        pubBuilder.setTimestamp(publication.getTimestamp());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             pubBuilder.build().writeTo(outputStream);
