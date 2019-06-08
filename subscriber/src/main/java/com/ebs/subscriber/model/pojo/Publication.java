@@ -9,13 +9,15 @@ public class Publication {
     String height;
     String eyeColor;
     String heartRate;
+    String timestamp;
 
-    public Publication(String patientName, String dateOfBirth, String height, String eyeColor, String heartRate) {
+    public Publication(String patientName, String dateOfBirth, String height, String eyeColor, String heartRate, String timestamp) {
         this.patientName = patientName;
         this.dateOfBirth = dateOfBirth;
         this.height = height;
         this.eyeColor = eyeColor;
         this.heartRate = heartRate;
+        this.timestamp = timestamp;
     }
 
     @Override
@@ -46,6 +48,11 @@ public class Publication {
     public String getHeartRate() {
         return heartRate;
     }
+
+
+  public String getTimestamp() {
+    return timestamp;
+  }
 
     @Override
     public boolean equals(Object o) {
