@@ -22,12 +22,16 @@ public class PublicationReceiverController {
 
     @GetMapping("/getReport")
     public String getReport(){
+        if(PublicationReceiverService.getPublications().size()==0){
+            return "No publications received";
+        }
         long milis = 0;
         for (Publication pub: PublicationReceiverService.getPublications()) {
-            LocalDateTime localDateTime = LocalDateTime.now();
-            milis+=LocalDateTime.parse(pub.getTimestamp()).until(localDateTime, ChronoUnit.MILLIS);
+            milis+=pub.getDifference();
         }
         milis = milis/ PublicationReceiverService.getPublications().size();
-        return "Mean time of received publication calculated by this broker is: " + milis;
+        StringBuilder builder = new StringBuilder("Mean time of received publication calculated by this broker is: " + milis+" miliseconds\n");
+        builder.append("\n Total received publications: "+PublicationReceiverService.getPublications().size());
+        return builder.toString();
     }
 }

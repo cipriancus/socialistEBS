@@ -12,12 +12,16 @@ public class PublicationReceiverService {
 
     public static List<Publication> publications = new ArrayList<>();
     public void processPublication(Publication publication){
-        publications.add(publication);
 
         System.out.println("Received: "+publication.toString());
 
         LocalDateTime localDateTime = LocalDateTime.now();
-        System.out.println("Duration: "+ LocalDateTime.parse(publication.getTimestamp()).until(localDateTime, ChronoUnit.MILLIS)+" miliseconds");
+        long miliseconds = LocalDateTime.parse(publication.getTimestamp()).until(localDateTime, ChronoUnit.MILLIS);
+        miliseconds = Math.abs(miliseconds);
+        System.out.println("Duration: "+ miliseconds +" miliseconds");
+
+        publication.setDifference(miliseconds);
+        publications.add(publication);
 
     }
 

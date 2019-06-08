@@ -10,6 +10,7 @@ public class Publication {
     String eyeColor;
     String heartRate;
     String timestamp;
+    long difference;
 
     public Publication(
             String patientName,
@@ -84,6 +85,13 @@ public class Publication {
                 heartRate.equals(that.heartRate);
     }
 
+    public long getDifference() {
+        return difference;
+    }
+
+    public void setDifference(long difference) {
+        this.difference = difference;
+    }
     @Override
     public int hashCode() {
         return Objects.hash(patientName, dateOfBirth, height, eyeColor, heartRate);
