@@ -66,6 +66,9 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
   @Value("${destination}")
   private String destination;
 
+  @Value("${myIp}")
+  private String myExtIp;
+
   @Autowired Environment environment;
 
   @Override
@@ -102,14 +105,11 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
 
     MultiValueMap<String, String> headers = new HttpHeaders();
     List<String> list = new ArrayList<String>();
-    try {
-      list.add(
-          Inet4Address.getLocalHost().getHostAddress()
+    list.add(
+            myExtIp
               + ":"
               + environment.getProperty("local.server.port"));
-    } catch (UnknownHostException e) {
-      e.printStackTrace();
-    }
+
     headers.put("client_ip", list);
     HttpEntity<String> request = new HttpEntity<>(subscriptionAsString, headers);
     try {

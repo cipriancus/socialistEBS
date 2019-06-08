@@ -22,17 +22,9 @@ public class Main {
     public static void main(String[] args) {
         RestTemplate restTemplate = new RestTemplate();
 
-        String ip = args[0];
-        String port = args[1];
-        int pubGenCount = Integer.parseInt(args[2]);
-        String endpoint = "/public/publish";
-        StringBuilder builder = new StringBuilder("http://");
-        builder.append(ip);
-        builder.append(":");
-        builder.append(port);
-        builder.append(endpoint);
+        String url = args[0] + "/public/publish";
 
-        String url = builder.toString();
+        int pubGenCount = Integer.parseInt(args[1]);
 
         for (int i = 0; i < pubGenCount; i++) {
             Publication publication = new PublicationGenerator().generatePublication();
