@@ -9,6 +9,8 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class ConverterService {
 
@@ -17,6 +19,8 @@ public class ConverterService {
         try {
             Pub.Publication pub = Pub.Publication.parseFrom(serialized.getBytes());
             publication = new Publication(pub.getPatientName(), pub.getDateOfBirth(), pub.getHeight(), pub.getEyeColor(), pub.getHeartRate());
+            LocalDateTime localDateTime = LocalDateTime.now();
+            System.out.println("Duration: "+ LocalDateTime.parse(pub.getTimestamp()).until(localDateTime, ChronoUnit.MILLIS)+" miliseconds");
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
