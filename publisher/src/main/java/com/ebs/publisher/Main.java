@@ -29,7 +29,7 @@ public class Main {
         int seconds = Integer.parseInt(args[1]);
         LocalDateTime startTime = LocalDateTime.now(Clock.systemUTC());
 //        for (int i = 0; i < pubGenCount; i++) {
-        while(LocalDateTime.now(Clock.systemUTC()).until(startTime, ChronoUnit.SECONDS)<seconds){
+        while(startTime.until(LocalDateTime.now(Clock.systemUTC()), ChronoUnit.SECONDS)<seconds){
             Publication publication = new PublicationGenerator().generatePublication();
             Pub.Publication.Builder pubBuilder = Pub.Publication.newBuilder();
             pubBuilder.setDateOfBirth(publication.getDateOfBirth());
