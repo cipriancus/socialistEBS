@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -17,7 +18,9 @@ public class PublicationReceiverController {
 
     @PostMapping("/publication")
     public void receivePublication(@RequestBody String publication){
-        service.processPublication(ConverterService.getPublicationFromProtoString(publication));
+        Publication pub = ConverterService.getPublicationFromProtoString(publication);
+        System.out.println("Received publication at: "+LocalDateTime.now(Clock.systemUTC()).toString()+" sent at: "+pub.getTimestamp());
+        service.processPublication(pub);
     }
 
     @GetMapping("/getReport")
@@ -30,7 +33,7 @@ public class PublicationReceiverController {
             milis+=pub.getDifference();
         }
         milis = milis/ PublicationReceiverService.getPublications().size();
-        StringBuilder builder = new StringBuilder("Mean time of received publication calculated by this broker is: " + milis+" miliseconds\n");
+        StringBuilder builder = new StringBuilder("Mean time of received publication calculated by this subscriber is: " + milis+" miliseconds\n");
         builder.append("\n Total received publications: "+PublicationReceiverService.getPublications().size());
         return builder.toString();
     }

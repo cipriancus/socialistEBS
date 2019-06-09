@@ -1,8 +1,8 @@
 package com.ebs.subscriber.service;
 
 import com.ebs.subscriber.model.pojo.Publication;
-import com.ebs.subscriber.model.protogen.Pub;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -15,9 +15,9 @@ public class PublicationReceiverService {
 
         System.out.println("Received: "+publication.toString());
 
-        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime localDateTime = LocalDateTime.now(Clock.systemUTC());
         long miliseconds = LocalDateTime.parse(publication.getTimestamp()).until(localDateTime, ChronoUnit.MILLIS);
-        miliseconds = Math.abs(miliseconds);
+//        miliseconds = Math.abs(miliseconds); in case we still have negative times
         System.out.println("Duration: "+ miliseconds +" miliseconds");
 
         publication.setDifference(miliseconds);
