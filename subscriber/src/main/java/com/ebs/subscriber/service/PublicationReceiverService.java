@@ -16,8 +16,7 @@ public class PublicationReceiverService {
         System.out.println("Received: "+publication.toString());
 
         LocalDateTime localDateTime = LocalDateTime.now(Clock.systemUTC());
-        long miliseconds = LocalDateTime.parse(publication.getTimestamp()).until(localDateTime, ChronoUnit.MILLIS);
-//        miliseconds = Math.abs(miliseconds); in case we still have negative times
+        long miliseconds = Math.abs(LocalDateTime.parse(publication.getTimestamp()).until(localDateTime, ChronoUnit.MILLIS));
         System.out.println("Duration: "+ miliseconds +" miliseconds");
 
         publication.setDifference(miliseconds);

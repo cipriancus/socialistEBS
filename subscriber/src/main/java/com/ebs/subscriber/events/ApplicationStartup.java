@@ -30,6 +30,8 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
   private RestTemplate restTemplate = new RestTemplate();
   private static FieldFactory fieldFactory = new FieldFactory();
 
+  private static long sentSubscriptions = 0;
+
   @Value("${subNumber}")
   private int subNumber;
 
@@ -96,6 +98,8 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
       ArrayList<Subscription> subscriptions = generator.generate(subNumber);
       for (Subscription subscription : subscriptions) {
         send(subscription);
+        sentSubscriptions++;
+        System.out.println("I sent a no of " + sentSubscriptions + " subscriptions");
       }
     }
   }
@@ -105,10 +109,7 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
 
     MultiValueMap<String, String> headers = new HttpHeaders();
     List<String> list = new ArrayList<String>();
-    list.add(
-            myExtIp
-              + ":"
-              + environment.getProperty("local.server.port"));
+    list.add(myExtIp);
 
     headers.put("client_ip", list);
     HttpEntity<String> request = new HttpEntity<>(subscriptionAsString, headers);
