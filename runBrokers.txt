@@ -1,0 +1,36 @@
+To run the broker overlay architecture:
+
+Must create 3 projects, called broker1, broker2, broker3, the settings are in here https://github.com/cipriancus/socialistEBS/tree/routing-alg/broker/src/main/resources/brokers_ymls
+
+and they must be but in resources so they can take the settings
+
+broker2 is the "master" so you have to open broker1 and 3 first an then broker2
+
+you must wait for the sincronization and the broker 2 must output something like this:
+
+Broker has responded 127.0.0.1:8888
+Broker has responded 127.0.0.1:8890
+I know broker 127.0.0.1:8888
+I know broker 127.0.0.1:8890
+Broker has responded 127.0.0.1:8888
+Broker has responded 127.0.0.1:8890
+I know broker 127.0.0.1:8888
+I know broker 127.0.0.1:8890
+Broker has responded 127.0.0.1:8888
+Broker has responded 127.0.0.1:8890
+I know broker 127.0.0.1:8888
+I know broker 127.0.0.1:8890
+Broker has responded 127.0.0.1:8888
+Broker has responded 127.0.0.1:8890
+I know broker 127.0.0.1:8888
+I know broker 127.0.0.1:8890
+Broker has responded 127.0.0.1:8888
+Broker has responded 127.0.0.1:8890
+I know broker 127.0.0.1:8888
+I know broker 127.0.0.1:8890
+
+this means it can see 2 nodes
+
+the subscriber will subscribe and then you can run the publisher
+
+they can push to any nodes, preferably the shouldn't be on the same on, i'd put them one on 8888 and one on 8890 so the req goes through 8889

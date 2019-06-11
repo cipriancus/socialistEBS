@@ -9,22 +9,44 @@ public class Publication {
     String height;
     String eyeColor;
     String heartRate;
+    String timestamp;
+    long difference;
 
-    public Publication(String patientName, String dateOfBirth, String height, String eyeColor, String heartRate) {
+    public Publication(
+            String patientName,
+            String dateOfBirth,
+            String height,
+            String eyeColor,
+            String heartRate,
+            String timestamp) {
         this.patientName = patientName;
         this.dateOfBirth = dateOfBirth;
         this.height = height;
         this.eyeColor = eyeColor;
         this.heartRate = heartRate;
+        this.timestamp = timestamp;
     }
 
     @Override
     public String toString() {
-        return ("{(patient-name,\""+patientName+"\");" +
-                "(DoB,\""+dateOfBirth+"\");" +
-                "(height,"+height+");" +
-                "(eye-color,\""+eyeColor+"\");" +
-                "(heart-rate,"+heartRate+")}");
+        return ("{(patient-name,\""
+                + patientName
+                + "\");"
+                + "(DoB,\""
+                + dateOfBirth
+                + "\");"
+                + "(height,"
+                + height
+                + ");"
+                + "(eye-color,\""
+                + eyeColor
+                + "\");"
+                + "(heart-rate,"
+                + heartRate
+                + ");"
+                + "(timestamp,"
+                + timestamp
+                + ")}");
     }
 
     public String getPatientName() {
@@ -47,6 +69,10 @@ public class Publication {
         return heartRate;
     }
 
+    public String getTimestamp() {
+        return timestamp;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,6 +85,13 @@ public class Publication {
                 heartRate.equals(that.heartRate);
     }
 
+    public long getDifference() {
+        return difference;
+    }
+
+    public void setDifference(long difference) {
+        this.difference = difference;
+    }
     @Override
     public int hashCode() {
         return Objects.hash(patientName, dateOfBirth, height, eyeColor, heartRate);

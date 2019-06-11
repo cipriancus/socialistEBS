@@ -13,6 +13,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,19 +24,12 @@ public class Main {
     public static void main(String[] args) {
         RestTemplate restTemplate = new RestTemplate();
 
-        String ip = args[0];
-        String port = args[1];
-        int pubGenCount = Integer.parseInt(args[2]);
-        String endpoint = "/public/publish";
-        StringBuilder builder = new StringBuilder("http://");
-        builder.append(ip);
-        builder.append(":");
-        builder.append(port);
-        builder.append(endpoint);
+        String url = args[0] + "/public/publish";
 
-        String url = builder.toString();
-
-        for (int i = 0; i < pubGenCount; i++) {
+        int seconds = Integer.parseInt(args[1]);
+        LocalDateTime startTime = LocalDateTime.now(Clock.systemUTC());
+//        for (int i = 0; i < pubGenCount; i++) {
+        while(startTime.until(LocalDateTime.now(Clock.systemUTC()), ChronoUnit.SECONDS)<seconds){
             Publication publication = new PublicationGenerator().generatePublication();
             Pub.Publication.Builder pubBuilder = Pub.Publication.newBuilder();
             pubBuilder.setDateOfBirth(publication.getDateOfBirth());
@@ -41,6 +37,7 @@ public class Main {
             pubBuilder.setHeartRate(publication.getHeartRate());
             pubBuilder.setPatientName(publication.getPatientName());
             pubBuilder.setHeight(publication.getHeight());
+            pubBuilder.setTimestamp(LocalDateTime.now(Clock.systemUTC()).toString());
             System.out.println("Sending: "+publication.toString());
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             try {
@@ -60,7 +57,8 @@ public class Main {
             HttpEntity<String> request = new HttpEntity<>(publcationAsString,headers);
             try{
                 restTemplate.postForObject(url, request, String.class);
-            }catch(ResourceAccessException ignored){
+                Thread.sleep(1);
+            }catch(ResourceAccessException | InterruptedException ignored){
 
             }
         }

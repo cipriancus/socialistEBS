@@ -1,8 +1,10 @@
 package com.ebs.broker.network;
 
+import com.ebs.broker.model.ConverterService;
 import com.ebs.broker.model.pojo.Publication;
 import com.ebs.broker.model.RoutingTableEntry;
 import com.ebs.broker.model.pojo.Subscription;
+import com.ebs.broker.service.ComparerService;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +15,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class BrokerCommunication {
   private final String HTTP = "http://";
@@ -25,7 +24,15 @@ public class BrokerCommunication {
 
   private final String JOIN_URL = "/private/join_network";
 
+  private final String PROPAGATE_SUBSCRIPTION = "/private/propagate_subscription";
+
+  private final String PROPAGATE_PUBLICATION = "/private/propagate_publication";
+
+  private final String SUBSCRIBER_CALLBACK = "/publication";
+
   private List<RoutingTableEntry> routingTable;
+
+  private Set<String> localClients;
 
   @Value("${server.self-identity}")
   private String myIp;
@@ -39,6 +46,7 @@ public class BrokerCommunication {
   public BrokerCommunication() {
     knownBrokers = new ArrayList<>();
     routingTable = new ArrayList<>();
+    localClients = new HashSet<>();
   }
 
   @PostConstruct
@@ -64,10 +72,17 @@ public class BrokerCommunication {
         System.out.println("Broker has responded " + ip);
       }
     }
+    for (String knownBroker : knownBrokers) {
+      System.out.println("I know broker " + knownBroker);
+    }
+  }
+
+  public void addLocalClient(String ip) {
+    localClients.add(ip);
   }
 
   public boolean joinNetwork(String ipAddress) {
-    if (ping(ipAddress) == true && isNotInKnownBrokers(ipAddress) == true) {
+    if (isNotInKnownBrokers(ipAddress) == true) {
       knownBrokers.add(ipAddress);
       return true;
     }
@@ -77,7 +92,7 @@ public class BrokerCommunication {
   public boolean ping(String ipAddress) {
     try {
       String response =
-          restTemplate.getForEntity(HTTP + ipAddress + PING_URL, String.class).getBody();
+              restTemplate.getForEntity(HTTP + ipAddress + PING_URL, String.class).getBody();
       if (Strings.isNullOrEmpty(response)) {
         return true;
       }
@@ -93,9 +108,7 @@ public class BrokerCommunication {
 
   public boolean sendJoinNetworkRequest(String ipAddress) {
     try {
-      MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-      body.add("ipAddress", ipAddress);
-      HttpEntity<?> httpEntity = new HttpEntity<Object>(body, new HttpHeaders());
+      HttpEntity<?> httpEntity = new HttpEntity<Object>(myIp, new HttpHeaders());
 
       ResponseEntity response =
           restTemplate.exchange(
@@ -113,14 +126,7 @@ public class BrokerCommunication {
     return true;
   }
 
-//  public boolean handleSubscription(Subscription subscription, String clientIP) {
-//    routingTable.add(new RoutingTableEntry(subscription, clientIP));
-//    // TODO:create identity routing
-//    // give to other nodes
-//    return true;
-//  }
-
-  public Set<Subscription> administer(Subscription subscription, String clientIp) {
+  public Set<RoutingTableEntry> administer(Subscription subscription, String clientIp) {
     /*
        	begin{
     	Ms=0/
@@ -139,11 +145,18 @@ public class BrokerCommunication {
     	}
     }
     return Ms;
-        */
-    return null;
+    */
+    if (knownBrokers.contains(clientIp)) {
+      eraseEquivalentFilters(subscription, clientIp);
+    } else {
+      eraseFromTb(subscription, clientIp); // Tb=Tb-{(F,source(m))};//F si client
+    }
+    Set<RoutingTableEntry> a = dbi(subscription, clientIp);
+    routingTable.add(new RoutingTableEntry(subscription, clientIp)); // Tb=Tb U{(F,source(m))}
+    return a; // return ms/a
   }
 
-  public boolean handleAdminMessage(Set<Subscription> subscriptionSet, String clientIp) {
+  public boolean handleAdminMessage(Set<RoutingTableEntry> subscriptionSet, String clientIp) {
     /*
        	forall H in BN-{d} {
     	S={F|(F,H) in FS}
@@ -152,10 +165,17 @@ public class BrokerCommunication {
     	}
     }
         */
+    for (RoutingTableEntry iterator : subscriptionSet) {
+      if (iterator.getSubscription() != null && iterator.getBrokerIp() != null) {
+        if (propagateSubscription(iterator.getSubscription(), iterator.getBrokerIp()) == false) {
+          return false;
+        }
+      }
+    }
     return true;
   }
 
-  public boolean handleNotification(Publication publicationList, String brokerIp) {
+  public boolean handleNotification(Publication publication, String brokerIp) {
     /*
        matching_nodes = destinatins(match(FB,n));
     // toate nodurile destinati mai putin D intersectat cu brokerii vecini
@@ -170,17 +190,84 @@ public class BrokerCommunication {
     	notify(C,n) --> notifica clientul de notificarea n
     }
         */
+    Set<String> matchingNodes = destinations(match(publication, brokerIp));
+    for (String iterator : matchingNodes) {
+      if (knownBrokers.contains(iterator) && iterator.equals(brokerIp) == false) {
+        if (propagatePublication(publication, iterator) == false) {
+          return false;
+        }
+      }
+    }
+
+    for (String iterator : matchingNodes) {
+      if (localClients.contains(iterator)) {
+        if (notify(publication, iterator) == false) {
+          return false;
+        }
+      }
+    }
     return true;
+  }
+
+  public boolean notify(Publication publication, String clientIP) {
+    try {
+      MultiValueMap<String, String> headers = new HttpHeaders();
+      HttpEntity<String> request =
+          new HttpEntity<>(ConverterService.getProtoStringFromPublication(publication), headers);
+
+      ResponseEntity<String> response =
+          restTemplate.postForEntity(HTTP + clientIP + SUBSCRIBER_CALLBACK, request, String.class);
+
+      if (response.getStatusCode() == HttpStatus.OK) {
+        return true;
+      }
+    } catch (RestClientException exception) {
+      exception.printStackTrace();
+      return false;
+    }
+    return false;
   }
 
   public boolean propagatePublication(Publication publication, String brokerIp) {
-    //	send(Bi,n)
-    return true;
+    try {
+      MultiValueMap<String, String> headers = new HttpHeaders();
+      headers.put("broker_ip", Arrays.asList(myIp));
+      HttpEntity<String> request =
+          new HttpEntity<>(ConverterService.getProtoStringFromPublication(publication), headers);
+
+      ResponseEntity<String> response =
+          restTemplate.postForEntity(
+              HTTP + brokerIp + PROPAGATE_PUBLICATION, request, String.class);
+
+      if (response.getStatusCode() == HttpStatus.OK) {
+        return true;
+      }
+    } catch (RestClientException exception) {
+      exception.printStackTrace();
+      return false;
+    }
+    return false;
   }
 
   public boolean propagateSubscription(Subscription subscription, String brokerIp) {
-    //	send(Bi,s)
-    return true;
+    try {
+      MultiValueMap<String, String> headers = new HttpHeaders();
+      headers.put("broker_ip", Arrays.asList(myIp));
+      HttpEntity<String> request =
+          new HttpEntity<>(ConverterService.getProtoStringFromSubscription(subscription), headers);
+
+      ResponseEntity<String> response =
+          restTemplate.postForEntity(
+              HTTP + brokerIp + PROPAGATE_SUBSCRIPTION, request, String.class);
+
+      if (response.getStatusCode() == HttpStatus.OK) {
+        return true;
+      }
+    } catch (RestClientException exception) {
+      exception.printStackTrace();
+      return false;
+    }
+    return false;
   }
 
   private boolean isNotInKnownBrokers(String ipAddress) {
@@ -190,5 +277,62 @@ public class BrokerCommunication {
       }
     }
     return true;
+  }
+
+  private void eraseEquivalentFilters(Subscription subscription, String clientIp) {
+    Iterator<RoutingTableEntry> iterator = routingTable.iterator();
+
+    while (iterator.hasNext()) {
+      RoutingTableEntry routingTableEntry = iterator.next();
+
+      if (routingTableEntry.getBrokerIp().equals(clientIp)
+          && routingTableEntry.getSubscription().equals(subscription)) {
+        iterator.remove();
+      }
+    }
+  }
+
+  private void eraseFromTb(Subscription subscription, String clientIp) {
+    Iterator<RoutingTableEntry> iterator = routingTable.iterator();
+
+    while (iterator.hasNext()) {
+      RoutingTableEntry routingTableEntry = iterator.next();
+
+      if (routingTableEntry.getBrokerIp().equals(clientIp)
+          && routingTableEntry.getSubscription().equals(subscription)) {
+        iterator.remove();
+      }
+    }
+  }
+
+  private Set<RoutingTableEntry> dbi(Subscription subscription, String clientIp) {
+    Set<RoutingTableEntry> sendBrokers = new HashSet<>();
+    for (String iterator : knownBrokers) {
+      if (iterator.equals(clientIp) == false) {
+        RoutingTableEntry newEntity = new RoutingTableEntry(subscription, iterator);
+        if (!routingTable.contains(newEntity)) { // daca nu mai exista "filtrul" in Tb
+          sendBrokers.add(newEntity);
+        }
+      }
+    }
+    return sendBrokers;
+  }
+
+  private Set<String> destinations(Set<RoutingTableEntry> set) {
+    Set<String> ips = new HashSet<>();
+    for (RoutingTableEntry iterator : set) {
+      ips.add(iterator.getBrokerIp());
+    }
+    return ips;
+  }
+
+  private Set<RoutingTableEntry> match(Publication publication, String brokerIp) {
+    Set<RoutingTableEntry> matchingSubscription = new HashSet<>();
+    for (RoutingTableEntry iterator : routingTable) {
+      if (ComparerService.compare(iterator.getSubscription(), publication)) {
+        matchingSubscription.add(iterator);
+      }
+    }
+    return matchingSubscription;
   }
 }
