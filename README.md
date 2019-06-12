@@ -2,6 +2,7 @@
 
 CCCP - which is comprised of the authors names: Cusmuliuc Coca Cazacu Prodan - from the former USSR - hence the socialism - everybody is equal in our system :)
 
+If you are interested in our work please contact me and we can arrage a meeting.
 
  ![ghxydpuqd6a11](https://user-images.githubusercontent.com/16385499/56556098-b5741580-659f-11e9-89a1-18e81b3b8f25.jpg)
 
