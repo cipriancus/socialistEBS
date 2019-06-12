@@ -5,8 +5,8 @@ CCCP - which is comprised of the authors names: Cusmuliuc Coca Cazacu Prodan - f
 
  ![ghxydpuqd6a11](https://user-images.githubusercontent.com/16385499/56556098-b5741580-659f-11e9-89a1-18e81b3b8f25.jpg)
 
-#Info
+# Info
 
 The system uses "Identity routing" that is described in a a file in root of project, it has a mix of Romanian and English so please use google translate :) fully coud working with Spring Boot
 
-![ghxydpuqd6a11](https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Romania.svg/255px-Flag_of_Romania.svg.png)
+![ghxydpuqd6a11](https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Romania.svg/1280px-Flag_of_Romania.svg.png)
